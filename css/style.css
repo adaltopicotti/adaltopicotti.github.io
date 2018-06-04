@@ -1,0 +1,17 @@
+header {
+  position: relative;
+}
+
+.container {
+  margin: 0 auto;
+  width: 940px;
+}
+
+.contato,
+.lista-habilidades {
+  float: left;
+}
+
+.lista-habilidades {
+  clear: left;
+}
