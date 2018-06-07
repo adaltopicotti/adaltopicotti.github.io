@@ -17,11 +17,4 @@ body {
   padding-left: 200px;
 }
 
-.contato,
-.lista-habilidades {
-  float: left;
-}
 
-.lista-habilidades {
-  clear: left;
-}
