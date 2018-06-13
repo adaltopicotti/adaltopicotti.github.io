@@ -1,0 +1,93 @@
+<html>
+	<head>
+		<title>Converter Cobertura</title>
+	</head>
+	<body>
+		<div>
+			<label>Prod. Esperada (SC/Alq):</label><input id="sc_alq" value="128"><br>
+			<label>Nivel de Cobertura</label>
+			<select id="nivel_cob">
+				<option value="0.6">60%</option>
+				<option value="0.65">65%</option>
+			</select>
+			<br><button onclick="conversao();">Converter</button>
+		</div>
+		<span id="resultado"></span>
+		<div>
+			<h2>Indenização Granizo / Geada</h2>
+			<label>Área (Hectare):</label><input id="area" value=""><br>
+			<label>Cobertura (R$/hectare)</label><input id="cobertura" value=""><br>
+			<label>Evento:</label>
+			<select id="evento">
+				<option value="granizo">Granizo</option>
+				<option value="geada">Geada</option>
+			</select><br>
+			<label>Dano (%):</label><input id="dano" value=""><br>
+			<br><button onclick="ind_gg();">Calcular</button>
+		</div>
+		<span id="ind"></span>
+		
+		<script>
+			function convert(){
+				var cobHa = document.getElementById("cobHa").value;
+				document.getElementById("resultado").innerHTML = parseFloat((cobHa)*60).toFixed(2);
+				document.getElementById("resultado").innerHTML += " kg/ha";
+			};
+			
+			function ind_gg(){
+				let area = document.getElementById("area").value;;
+				let cobertura = document.getElementById("cobertura").value;
+				let evento = document.getElementById("evento").value;
+				let dano = document.getElementById("dano").value;;
+				let lmi = area * cobertura;
+				let franquia = "";
+				if(evento == "granizo"){
+					franquia = 0.1;
+				} else {
+					franquia = 0.2;
+				}
+				let indenizacao = (lmi * (dano/100)) - (franquia * lmi);
+				let html = "";
+				html += `${indenizacao}`;
+				document.getElementById("ind").innerHTML = html;
+			}
+			
+			function conversao(){
+			
+				let prod_esp_sc_alq = document.getElementById("sc_alq").value;
+				let nc = document.getElementById("nivel_cob");
+				//Produtividade Esperada KG/Alqueire
+				let prod_esp_kg_alq = parseFloat(prod_esp_sc_alq*60).toFixed(2);
+				//Produtividade Esperada KG/hectare
+				let prod_esp_kg_ha = parseFloat(prod_esp_kg_alq/2.42).toFixed(2);
+				//Produtividade Esperada SC/hectare
+				let prod_esp_sc_ha = parseFloat(prod_esp_kg_ha/60).toFixed(2);
+				//Produtividade Segurada SC/Alqueire
+				let prod_seg_sc_alq = parseFloat(prod_esp_sc_alq*nc.value).toFixed(2);
+				//Produtividade Segurada KG/Alqueire
+				let prod_seg_kg_alq = parseFloat(prod_esp_kg_alq*nc.value).toFixed(2);
+				//Produtividade Segurada KG/hectare
+				let prod_seg_kg_ha = parseFloat(prod_esp_kg_ha*nc.value).toFixed(2);
+				//Produtividade Segurada SC/hectare
+				let prod_seg_sc_ha = parseFloat(prod_esp_sc_ha*nc.value).toFixed(2);				
+				let html = nc.value;
+				html += `<ul>`;
+				html += `<h2> Produtividade Esperada</h2>`;
+				html += `<li>(Alqueire) Prod. Esperada: ${prod_esp_sc_alq} (sc/alq)</li>`;
+				html += `<li>(Alqueire) Prod. Esperada: ${prod_esp_kg_alq} (sc/alq)</li>`;
+				html += `<li>(Hectare) Prod. Esperada: ${prod_esp_sc_ha} (sc/ha)</li>`;
+				html += `<li>(Hectare) Prod. Esperada: ${prod_esp_kg_ha} (kg/ha)</li>`;
+				html += `</ul>`;
+				html += `<ul>`;
+				html += `<h2> Produtividade Segurada</h2>`;
+				html += `<h3> Nível de Cobertura de ${nc.value*100}%</h3>`;
+				html += `<li>(Alqueire) Prod. Esperada: ${prod_seg_sc_alq} (sc/alq)</li>`;
+				html += `<li>(Alqueire) Prod. Esperada: ${prod_seg_kg_alq} (kg/alq)</li>`;
+				html += `<li>(Hectare) Prod. Esperada: ${prod_seg_sc_ha} (sc/ha)</li>`;
+				html += `<li>(Hectare) Prod. Esperada: ${prod_seg_kg_ha} (kg/ha)</li>`;
+				html += `</ul>`;
+				document.getElementById("resultado").innerHTML = html;
+			}
+		</script>
+	</body>
+</html>
