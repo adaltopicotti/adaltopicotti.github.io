@@ -36,6 +36,7 @@
        }
        else if (s == 1)
        {
+          document.getElementById('teste').innerHTML = s + ' segundo.';
           document.getElementById('redirecionamento').innerHTML = 'Redirecionando em ' + s-- + ' segundo.';
           contagem = setTimeout(contar, 1000);
        }
